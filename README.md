@@ -1,7 +1,7 @@
-<h1 align=center>Principales-mecanismos-IPC-en-UNIX</h1>
+<h1 align=center>Principales mecanismos IPC en UNIX</h1>
 Los Mecanismos de Comunicación entre Procesos (IPC), abreviatura de Inter-Process Communication, son herramientas y técnicas fundamentales que dotan de capacidad a los procesos en sistemas Unix para establecer conexiones y compartir recursos de manera eficiente y colaborativa. La capacidad de comunicarse y compartir recursos es esencial para la construcción de aplicaciones y sistemas complejos, lo que convierte a los IPC en una parte esencial del lenguaje C y los sistemas Unix.
 
-<h2 align=center>Signals - Señales</h2>
+<br><h2 align=center>Signals - Señales</h2>
 
 Las señales en Unix son eventos asincrónicos que permiten la comunicación y el control entre procesos y el sistema operativo. Son notificaciones que un proceso envía o recibe para manejar eventos o situaciones específicas. Se presentan tres ejemplos en C que utilizan señales:
 
@@ -100,7 +100,7 @@ Las señales también se pueden utilizar para la comunicación entre hilos dentr
     }
 ```
 
-<h2 align=center>Semaphores - Semáforos</h2>
+<br><h2 align=center>Semaphores - Semáforos</h2>
 Los semáforos en Unix ayudan a controlar cuándo un programa puede acceder a ciertas áreas o recursos compartidos, evitando bloqueos y comportamientos erroneros. También pueden ayudar a los programas a comunicarse entre sí, asegurándose que esperen su turno antes de continuar. En resumen, son herramientas clave para mantener el orden y la cooperación entre programas en sistemas multitarea.
 
 
