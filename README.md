@@ -5,10 +5,10 @@ Los Mecanismos de Comunicación entre Procesos (IPC), abreviatura de Inter-Proce
 
 Las señales en Unix son eventos asincrónicos que permiten la comunicación y el control entre procesos y el sistema operativo. Son notificaciones que un proceso envía o recibe para manejar eventos o situaciones específicas. Se presentan tres ejemplos en C que utilizan señales:
 
-### **Captura de Ctrl+C**
+#### **Captura de Ctrl+C**
 Un ejemplo simple es la captura de la señal SIGINT (generada al presionar Ctrl+C en el teclado) para realizar acciones antes de que un programa se cierre.
 
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <stdio.h>
     #include <stdlib.h>
@@ -29,9 +29,9 @@ Un ejemplo simple es la captura de la señal SIGINT (generada al presionar Ctrl+
     }
 ```
 
-### **Comunicación Padre-Hijo**
+#### **Comunicación Padre-Hijo**
 Las señales también se utilizan para la comunicación entre un proceso padre y uno, o varios procesos hijos. En el siguiente ejemplo, el padre envía una señal SIGUSR1 al hijo para notificar un evento.
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <stdio.h>
     #include <stdlib.h>
@@ -65,9 +65,9 @@ Las señales también se utilizan para la comunicación entre un proceso padre y
     }
 ```
 
-### **Comunicación entre Hilos**
+#### **Comunicación entre Hilos**
 Las señales también se pueden utilizar para la comunicación entre hilos dentro de un proceso. En el siguiente ejemplo, un hilo envía una señal a otro hilo para sincronizar su trabajo.
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <stdio.h>
     #include <pthread.h>
@@ -104,10 +104,10 @@ Las señales también se pueden utilizar para la comunicación entre hilos dentr
 Los semáforos en Unix ayudan a controlar cuándo un programa puede acceder a ciertas áreas o recursos compartidos, evitando bloqueos y comportamientos erroneros. También pueden ayudar a los programas a comunicarse entre sí, asegurándose que esperen su turno antes de continuar. En resumen, son herramientas clave para mantener el orden y la cooperación entre programas en sistemas multitarea.
 
 
-### **Control de Acceso con Semáforos en C**
+#### **Control de Acceso con Semáforos**
 Este código en C utiliza semáforos para coordinar la ejecución entre un hilo principal y un hilo secundario en un entorno multi-hilo. El semáforo permite que el hilo secundario ejecute su código solo después de que el hilo principal lo desbloquee, lo que ilustra la sincronización y el control de acceso a recursos compartidos en programas concurrentes.
 
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <semaphore.h>
     #include <pthread.h>
@@ -142,10 +142,10 @@ Este código en C utiliza semáforos para coordinar la ejecución entre un hilo 
     }
 ```
 
-### **Sincronización de Hilos con Semáforos en C**
+#### **Sincronización de Hilos con Semáforos**
 Este código demuestra el uso de semáforos para coordinar dos hilos en un entorno multi-hilo. Se crea un semáforo para controlar el acceso a una sección de código compartida por los dos hilos. Cada hilo espera su turno mediante `sem_wait`, ejecuta su sección de código y luego finaliza con `sem_post`. La sincronización garantiza que los hilos impriman su salida en un orden específico y evita posibles conflictos durante la ejecución concurrente.
 
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <stdio.h>
     #include <pthread.h>
@@ -194,10 +194,10 @@ Este código demuestra el uso de semáforos para coordinar dos hilos en un entor
 ```
 
 
-### **Incremento Concurrente con Semáforos en C**
+#### **Incremento Concurrente con Semáforos**
 Este código en C utiliza semáforos para coordinar el incremento concurrente de una variable `counter` por múltiples hilos. Se crean cuatro hilos, cada uno aumenta el valor de `counter` en un millón, y los semáforos garantizan que los hilos accedan a la variable de manera sincronizada. Al final, se muestra el valor final de `counter`. El código ejemplifica cómo los semáforos pueden utilizarse para controlar el acceso compartido a recursos y prevenir condiciones de carrera en programas multi-hilo.
 
-#### **Código en C:**
+#### **Código:**
 ```c
     #include <stdio.h>
     #include <stdlib.h>
@@ -236,4 +236,4 @@ Este código en C utiliza semáforos para coordinar el incremento concurrente de
 ```
 
 <h2 align=center>Pipes - Tuberías</h2>
-Las 
+Las Tuberias
