@@ -195,7 +195,7 @@ Este código demuestra el uso de semáforos para coordinar dos hilos en un entor
 
 
 #### **Incremento Concurrente con Semáforos**
-Este código en C utiliza semáforos para coordinar el incremento concurrente de una variable `counter` por múltiples hilos. Se crean cuatro hilos, cada uno aumenta el valor de `counter` en un millón, y los semáforos garantizan que los hilos accedan a la variable de manera sincronizada. Al final, se muestra el valor final de `counter`. El código ejemplifica cómo los semáforos pueden utilizarse para controlar el acceso compartido a recursos y prevenir condiciones de carrera en programas multi-hilo.
+Este ejemplo utiliza semáforos para coordinar el incremento concurrente de la variable `counter` por múltiples hilos. Se crean cuatro hilos, cada uno aumenta el valor de la variable en un millón mediante un ciclo for; los semáforos garantizan que los hilos accedan a la variable de manera sincronizada. Al final, se muestra el valor total de `counter`.
 
 #### **Código:**
 ```c
