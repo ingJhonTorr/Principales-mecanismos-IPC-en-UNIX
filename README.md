@@ -101,7 +101,7 @@ Las señales también se pueden utilizar para la comunicación entre hilos dentr
 ```
 
 <br><h2 align=center>Semaphores - Semáforos</h2>
-Los semáforos en Unix ayudan a controlar cuándo un programa puede acceder a ciertas áreas o recursos compartidos, evitando bloqueos y comportamientos erroneros. También pueden ayudar a los programas a comunicarse entre sí, asegurándose que esperen su turno antes de continuar. En resumen, son herramientas clave para mantener el orden y la cooperación entre programas en sistemas multitarea.
+Los semáforos en sistemas Unix ayudan a controlar cuándo un programa puede acceder a ciertas áreas o recursos compartidos, evitando bloqueos y condiciones de carrera. También pueden ayudar a los programas a comunicarse entre sí, asegurándose que esperen su turno antes de continuar. En resumen, son herramientas clave para mantener el orden y la cooperación entre programas en sistemas multitarea.
 
 
 #### **Control de Acceso con Semáforos**
@@ -236,4 +236,118 @@ Este ejemplo utiliza semáforos para coordinar el incremento concurrente de la v
 ```
 
 <h2 align=center>Pipes - Tuberías</h2>
-Las Tuberias
+En sistemas Unix, Las tuberías son canales de comunicación unidireccional y permiten que dos programas se comuniquen entre sí de manera eficiente y sincronizada. Las tuberías son útiles para pasar información de un programa a otro, lo que permite la colaboración y el intercambio de datos de manera fluida. Además, las tuberías pueden utilizarse para la entrada y salida estándar, permitiendo que la salida de un programa se convierta en la entrada de otro, esto es esencial en la construcción de flujos de trabajo complejos y la automatización de tareas. A continuación, se muestran dos ejemplos en C que ilustran el funcionamiento de las tuberías.
+
+#### **Comunicación Unidireccional entre Procesos con Tuberías**
+Este código muestra cómo dos procesos, un padre y un hijo, se comunican utilizando tuberías. El proceso padre envía un mensaje al proceso hijo a través de una tubería, y el proceso hijo lee y muestra el mensaje recibido por la salida estandar.
+
+#### **Código:**
+```c
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+    
+    int main() {
+        int pipe_fd[2];
+        pid_t pid;
+    
+        if (pipe(pipe_fd) == -1) {
+            perror("pipe");
+            return 1;
+        }
+    
+        pid = fork();
+        if (pid == -1) {
+            perror("fork");
+            return 1;
+        }
+    
+        if (pid == 0) {
+            // Proceso hijo
+            close(pipe_fd[1]); // Cerramos el extremo de escritura de la tubería
+            char buffer[100];
+            read(pipe_fd[0], buffer, sizeof(buffer));
+            printf("Hijo: Mensaje recibido: %s\n", buffer);
+            close(pipe_fd[0]);
+        } else {
+            // Proceso padre
+            close(pipe_fd[0]); // Cerramos el extremo de lectura de la tubería
+            const char *mensaje = "Hola desde el padre!";
+            write(pipe_fd[1], mensaje, strlen(mensaje) + 1);
+            close(pipe_fd[1]);
+        }
+    
+        return 0;
+    }
+```
+
+#### **Comunicación Bidireccional con dos Tuberías**
+En este ejemplo, se implementa la comunicación bidireccional entre un proceso padre y un proceso hijo utilizando dos tuberías. Cada tubería se utiliza para enviar mensajes en una dirección específica, lo que permite una comunicación fluida en ambas direcciones. El proceso padre y el hijo pueden intercambiar mensajes de manera sincronizada y cuando cualquiera de los procesos escribe "SALIR" como mensaje, el programa termina, permitiendo una salida controlada.
+
+#### **Código:**
+```c
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
+    #include <string.h>
+    
+    int main() {
+        int pipe_fd[2];
+        int pipe_fd2[2];
+        pid_t pid;
+        char buffer[256];
+    
+        if (pipe(pipe_fd) < 0 || pipe(pipe_fd2) < 0) {
+            perror("pipe");
+            exit(1);
+        }
+    
+        pid = fork();
+    
+        if (pid < 0) {
+            perror("fork");
+            exit(1);
+        }
+    
+        if (pid > 0) { // Proceso padre
+            close(pipe_fd[0]); // Cerramos el extremo de lectura de la primera tubería
+            close(pipe_fd2[1]); // Cerramos el extremo de escritura de la segunda tubería
+            while (1) {
+                printf("Escriba un mensaje para enviar al proceso hijo: ");
+                fgets(buffer, 256, stdin);
+                write(pipe_fd[1], buffer, strlen(buffer) + 1); // Escribimos en la primera tubería
+    
+                if (strcmp(buffer, "SALIR\n") == 0) {
+                    printf("La comunicación ha terminado!");
+                    break; // Terminar si se ingresa "SALIR"
+                }
+    
+                read(pipe_fd2[0], buffer, 256); // Leemos de la segunda tubería
+                printf("El proceso padre ha recibido el mensaje del proceso hijo: %s", buffer);
+            }
+            close(pipe_fd[1]); // Cerramos el extremo de escritura de la primera tubería
+            close(pipe_fd2[0]); // Cerramos el extremo de lectura de la segunda tubería
+        }
+        else { // Proceso hijo
+            close(pipe_fd[1]); // Cerramos el extremo de escritura de la primera tubería
+            close(pipe_fd2[0]); // Cerramos el extremo de lectura de la segunda tubería
+            while (1) {
+                read(pipe_fd[0], buffer, 256); // Leemos de la primera tubería
+    
+                if (strcmp(buffer, "SALIR\n") == 0) {
+                    printf("La comunicación ha terminado!");
+                    break; // Terminar si se ingresa "SALIR"
+                }
+    
+                printf("El proceso hijo ha recibido el mensaje del proceso padre: %s", buffer);
+                printf("Escriba un mensaje para enviar al proceso padre: ");
+                fgets(buffer, 256, stdin);
+                write(pipe_fd2[1], buffer, strlen(buffer) + 1); // Escribimos en la segunda tubería
+            }
+            close(pipe_fd[0]); // Cerramos el extremo de lectura de la primera tubería
+            close(pipe_fd2[1]); // Cerramos el extremo de escritura de la segunda tubería
+        }
+    
+        return 0;
+    }
+```
